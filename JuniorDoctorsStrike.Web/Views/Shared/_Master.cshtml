@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Junior Doctors Strike - Saving the NHS" />
+    <title>Junior Doctors Strike - Saving the NHS</title>
+    <link rel="stylesheet" type="text/css" href="~/Assets/site.css">
+</head>
+<body>
+    <header>
+        <div id="inner-header">
+            <img id="logo" src="~/Assets/fist.png" alt="#JuniorDoctorsStrike - Saving the NHS" />
+            <hgroup>
+                <h1>#JuniorDoctorsStrike</h1>
+                <h2>Doctors fighting to save the NHS</h2>
+            </hgroup>
+            <nav>
+                <ul>
+                    <li>Live Updates</li>
+                    <li>Doctor Stories</li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer>
+        <p id="inner-footer">
+            Copyright &copy; @DateTime.Now.Year, <a href="http://dusted.codes/">Dustin Moris Gorski</a>
+        </p>
+    </footer>
+</body>
+</html>

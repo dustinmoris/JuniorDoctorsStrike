@@ -1,0 +1,76 @@
+﻿@model JuniorDoctorsStrike.Web.ViewModels.IndexViewModel
+
+<section id="tweets">
+    @foreach (var tweet in Model.Tweets)
+    {
+        <div class="tweet">
+            <img class="user-picture" src="@tweet.User.ProfilePictureUrl" alt="@tweet.User.Name" />
+            <div class="tweet-content">
+                <p class="tweet-header">
+                    <span class="user-name">@tweet.User.Name</span>
+                    <span class="tweet-info">
+                        @{
+                            var timeInfo = "";
+
+                            if (tweet.TimeSinceCreated.TotalMinutes < 1)
+                            {
+                                timeInfo = "less than a minute ago";
+                            }
+                            else if (tweet.TimeSinceCreated.TotalMinutes >= 1 &&
+                                     tweet.TimeSinceCreated.TotalMinutes < 2)
+                            {
+                                timeInfo = "about a minute ago";
+                            }
+                            else if (tweet.TimeSinceCreated.TotalHours < 1)
+                            {
+                                timeInfo = Math.Round(tweet.TimeSinceCreated.TotalMinutes, MidpointRounding.ToEven) + " minutes ago";
+                            }
+                            else if (tweet.TimeSinceCreated.TotalHours >= 1 &&
+                                     tweet.TimeSinceCreated.TotalHours < 2)
+                            {
+                                timeInfo = "more than an hour ago";
+                            }
+                            else if (tweet.TimeSinceCreated.TotalDays < 1)
+                            {
+                                timeInfo = Math.Round(tweet.TimeSinceCreated.TotalHours, MidpointRounding.ToEven) + " hours ago";
+                            }
+                            else if (tweet.TimeSinceCreated.TotalDays >= 1 &&
+                                     tweet.TimeSinceCreated.TotalDays < 2)
+                            {
+                                timeInfo = "a day ago";
+                            }
+                            else if (tweet.TimeSinceCreated.TotalDays > 1)
+                            {
+                                timeInfo = Math.Round(tweet.TimeSinceCreated.TotalDays, MidpointRounding.ToEven) + " days ago";
+                            }
+                        }
+                        @timeInfo on Twitter
+                    </span>
+                </p>
+                <p class="tweet-message">
+                    @Html.Raw(tweet.Text)
+                </p>
+            </div>
+        </div>
+                            }
+</section>
+<aside id="tweets-aside">
+    <div>
+        <h2>About</h2>
+        <p>
+            <strong>#JuniorDoctorsStrike</strong> collects updates from various social media platforms to give junior doctors a public stage and support the fight against unsafe NHS conditions.
+        </p>
+        <p>Follow the debate all around the UK in one place!</p>
+        <p>
+            Read more <a href="">about this website</a>.
+        </p>
+    </div>
+    <div>
+        <h2>How it works</h2>
+        <p>
+            Tweet about the junior doctor strike with hashtag <a href="https://twitter.com/search?q=%23JuniorDoctorsStrike">#JuniorDoctorsStrike</a> and make it public! Retweets and replies are excluded.
+        </p>
+        <p>Integrations with Facebook and Instagram are coming soon!</p>
+    </div>
+</aside>
+<div class="clear"></div>
