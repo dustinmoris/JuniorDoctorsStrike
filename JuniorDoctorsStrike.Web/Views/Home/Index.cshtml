@@ -5,11 +5,11 @@
     {
         <div class="tweet">
             <img class="user-picture" src="@tweet.User.ProfilePictureUrl" alt="@tweet.User.Name" />
-            <div class="tweet-content">
-                <p class="tweet-header">
-                    <span class="user-name">@tweet.User.Name</span>
-                    <span class="tweet-info">
-                        @{
+
+            <p class="tweet-header">
+                <span class="user-name">@tweet.User.Name</span>
+                <span class="tweet-info">
+                    @{
                             var timeInfo = "";
 
                             if (tweet.TimeSinceCreated.TotalMinutes < 1)
@@ -23,7 +23,7 @@
                             }
                             else if (tweet.TimeSinceCreated.TotalHours < 1)
                             {
-                                timeInfo = Math.Round(tweet.TimeSinceCreated.TotalMinutes, MidpointRounding.ToEven) + " minutes ago";
+                                timeInfo = Math.Round(tweet.TimeSinceCreated.TotalMinutes,      MidpointRounding.ToEven) + " minutes ago";
                             }
                             else if (tweet.TimeSinceCreated.TotalHours >= 1 &&
                                      tweet.TimeSinceCreated.TotalHours < 2)
@@ -43,16 +43,15 @@
                             {
                                 timeInfo = Math.Round(tweet.TimeSinceCreated.TotalDays, MidpointRounding.ToEven) + " days ago";
                             }
-                        }
-                        @timeInfo on Twitter
-                    </span>
-                </p>
-                <p class="tweet-message">
-                    @Html.Raw(tweet.Text)
-                </p>
-            </div>
+                    }
+                    @timeInfo on Twitter
+                </span>
+            </p>
+            <p class="tweet-message">
+                @Html.Raw(tweet.Text)
+            </p>
         </div>
-                            }
+    }
 </section>
 <aside id="tweets-aside">
     <div>
@@ -73,4 +72,3 @@
         <p>Integrations with Facebook and Instagram are coming soon!</p>
     </div>
 </aside>
-<div class="clear"></div>
