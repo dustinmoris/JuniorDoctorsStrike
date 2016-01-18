@@ -20,5 +20,15 @@ namespace JuniorDoctorsStrike.Web.Controllers
             var viewModel = new IndexViewModel { Tweets = tweets };
             return View(viewModel);
         }
+
+        public ActionResult About()
+        {
+            return View();
+        }
+
+        public ActionResult Stories()
+        {
+            return View();
+        }
     }
 }
