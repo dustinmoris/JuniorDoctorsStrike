@@ -23,6 +23,12 @@ namespace JuniorDoctorsStrike.Web.Configuration
                 url: "About",
                 defaults: new { controller = "Home", action = "About" }
             );
+
+            routes.MapRoute(
+                name: "Stories",
+                url: "Stories",
+                defaults: new { controller = "Home", action = "Stories" }
+            );
         }
     }
 }
