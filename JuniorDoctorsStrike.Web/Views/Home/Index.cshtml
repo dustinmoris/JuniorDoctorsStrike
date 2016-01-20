@@ -1,15 +1,17 @@
 ﻿@model JuniorDoctorsStrike.Web.ViewModels.IndexViewModel
 
 <section id="tweets">
-    @foreach (var tweet in Model.Tweets)
+    @if (Model.Tweets != null && Model.Tweets.Any())
     {
-        <div class="tweet">
-            <img class="user-picture" src="@tweet.User.ProfilePictureUrl" alt="@tweet.User.Name" />
+        foreach (var tweet in Model.Tweets)
+        {
+            <div class="tweet">
+                <img class="user-picture" src="@tweet.User.ProfilePictureUrl" alt="@tweet.User.Name" />
 
-            <p class="tweet-header">
-                <span class="user-name">@tweet.User.Name</span>
-                <span class="tweet-info">
-                    @{
+                <p class="tweet-header">
+                    <span class="user-name">@tweet.User.Name</span>
+                    <span class="tweet-info">
+                        @{
                             var timeInfo = "";
 
                             if (tweet.TimeSinceCreated.TotalMinutes < 1)
@@ -23,7 +25,7 @@
                             }
                             else if (tweet.TimeSinceCreated.TotalHours < 1)
                             {
-                                timeInfo = Math.Round(tweet.TimeSinceCreated.TotalMinutes,      MidpointRounding.ToEven) + " minutes ago";
+                                timeInfo = Math.Round(tweet.TimeSinceCreated.TotalMinutes, MidpointRounding.ToEven) + " minutes ago";
                             }
                             else if (tweet.TimeSinceCreated.TotalHours >= 1 &&
                                      tweet.TimeSinceCreated.TotalHours < 2)
@@ -43,23 +45,24 @@
                             {
                                 timeInfo = Math.Round(tweet.TimeSinceCreated.TotalDays, MidpointRounding.ToEven) + " days ago";
                             }
-                    }
-                    @timeInfo on Twitter
-                </span>
-            </p>
-            <p class="tweet-message">
-                @Html.Raw(tweet.Text)
-            </p>
-        </div>
+                        }
+                        @timeInfo on Twitter
+                    </span>
+                </p>
+                <p class="tweet-message">
+                    @Html.Raw(tweet.Text)
+                </p>
+            </div>
+        }
     }
 </section>
 <aside id="tweets-aside">
     <div>
         <h2>About</h2>
         <p>
-            <strong>#JuniorDoctorsStrike</strong> collects updates from various social media platforms to give junior doctors a public stage and support the fight against unsafe NHS conditions.
+            <strong>#JuniorDoctorsStrike</strong> collect messages from various social media platforms such as Twitter, Instagram or Facebook and displays them in one centralised place. The intent is to support junior doctors by giving them a public stage to reach an even wider audience in the fight against an usafe contract and unsafe NHS conditions.
         </p>
-        <p>Follow the debate all around the UK in one place!</p>
+        <p>Follow the movement from anywhere in the UK!</p>
         <p>
             Read more @Html.ActionLink("about this website", "About", "Home").
         </p>
@@ -69,6 +72,6 @@
         <p>
             Tweet about the junior doctor strike with hashtag <a href="https://twitter.com/search?q=%23JuniorDoctorsStrike">#JuniorDoctorsStrike</a> and make it public! Retweets and replies are excluded.
         </p>
-        <p>Integrations with Facebook and Instagram are coming soon!</p>
+        <p>Integrations with Instagram and Facebook are coming soon!</p>
     </div>
 </aside>

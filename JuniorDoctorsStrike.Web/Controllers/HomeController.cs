@@ -16,8 +16,9 @@ namespace JuniorDoctorsStrike.Web.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var tweets = await _twitterClient.SearchRecent("#JuniorDoctorsStrike");
-            var viewModel = new IndexViewModel { Tweets = tweets };
+            //var tweets = await _twitterClient.SearchRecent("#JuniorDoctorsStrike");
+            //var viewModel = new IndexViewModel { Tweets = tweets };
+            var viewModel = new IndexViewModel();
             return View(viewModel);
         }
 
