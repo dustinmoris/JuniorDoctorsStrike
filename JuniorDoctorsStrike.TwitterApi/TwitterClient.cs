@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace JuniorDoctorsStrike.TwitterApi
@@ -29,13 +30,34 @@ namespace JuniorDoctorsStrike.TwitterApi
             _hashtagParser = hashtagParser;
         }
 
-        public async Task<IEnumerable<Message>> SearchAsync(IEnumerable<string> values, ResultType resultType)
+        public async Task<IEnumerable<Message>> SearchAsync(
+            IEnumerable<string> values, 
+            ResultType resultType,
+            int count)
+        {
+            return await SearchAsync(values, resultType, count, null);
+        }
+
+        public async Task<IEnumerable<Message>> SearchAsync(
+            IEnumerable<string> values,
+            ResultType resultType,
+            int count,
+            long sinceId)
+        {
+            return await SearchAsync(values, resultType, count, $"&since_id={sinceId}");
+        }
+
+        private async Task<IEnumerable<Message>> SearchAsync(
+            IEnumerable<string> values,
+            ResultType resultType,
+            int count,
+            string additionalParams)
         {
             var client = CreateHttpClient();
             var query = CreateQuery(values);
             var encodedQuery = _urlEncoder.Encode(query);
             var resType = ConvertFromResultType(resultType);
-            var requestUrl = $"search/tweets.json?q={encodedQuery}&result_type={resType}&count=30";
+            var requestUrl = $"search/tweets.json?q={encodedQuery}&result_type={resType}&count={count}{additionalParams}";
             var response = await client.GetAsync(requestUrl).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();
@@ -82,6 +104,8 @@ namespace JuniorDoctorsStrike.TwitterApi
         {
             foreach (var tweet in payload.statuses)
             {
+                var id = long.Parse(tweet.id_str.ToString());
+
                 var created = DateTime.ParseExact(
                     tweet.created_at.ToString(),
                     "ddd MMM dd HH:mm:ss zzz yyyy",
@@ -100,6 +124,7 @@ namespace JuniorDoctorsStrike.TwitterApi
 
                 yield return new Message
                 {
+                    Id = id,
                     Text = parsedTextWithHashtags,
                     Created = created,
                     TimeSinceCreated = DateTime.Now - created,

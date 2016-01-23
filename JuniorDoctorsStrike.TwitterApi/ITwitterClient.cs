@@ -6,6 +6,15 @@ namespace JuniorDoctorsStrike.TwitterApi
 {
     public interface ITwitterClient
     {
-        Task<IEnumerable<Message>> SearchAsync(IEnumerable<string> values, ResultType resultType);
+        Task<IEnumerable<Message>> SearchAsync(
+            IEnumerable<string> values, 
+            ResultType resultType,
+            int count);
+
+        Task<IEnumerable<Message>> SearchAsync(
+            IEnumerable<string> values,
+            ResultType resultType,
+            int count,
+            long sinceId);
     }
 }

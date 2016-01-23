@@ -7,5 +7,6 @@ namespace JuniorDoctorsStrike.Core
     public interface IStatusUpdateService
     {
         Task<IEnumerable<Message>> GetMessagesAsync();
+        Task<IEnumerable<Message>> GetMessagesAsync(long sinceId);
     }
 }
