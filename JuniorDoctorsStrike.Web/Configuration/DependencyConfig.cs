@@ -19,7 +19,7 @@ namespace JuniorDoctorsStrike.Web.Configuration
             builder.RegisterType<TwitterApiConfiguration>().As<ITwitterApiConfiguration>();
             builder.RegisterType<TwitterHashtagParser>().As<ITwitterHashtagParser>();
             builder.RegisterType<TwitterClient>().As<ITwitterClient>();
-            builder.RegisterType<StatusUpdateService>().As<IStatusUpdateService>();
+            builder.RegisterType<MessagesService>().As<IMessagesService>();
             builder.RegisterType<HomeController>().AsSelf();
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(builder.Build()));

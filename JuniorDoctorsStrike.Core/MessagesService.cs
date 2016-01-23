@@ -1,18 +1,20 @@
-﻿using JuniorDoctorsStrike.Common;
+﻿using System;
+using JuniorDoctorsStrike.Common;
 using JuniorDoctorsStrike.TwitterApi;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace JuniorDoctorsStrike.Core
 {
-    public class StatusUpdateService : IStatusUpdateService
+    public class MessagesService : IMessagesService
     {
         private const int Count = 30;
 
         private readonly ITwitterClient _twitterClient;
         private readonly IEnumerable<string> _hashtagsToObserve; 
 
-        public StatusUpdateService(ITwitterClient twitterClient)
+        public MessagesService(ITwitterClient twitterClient)
         {
             _twitterClient = twitterClient;
 

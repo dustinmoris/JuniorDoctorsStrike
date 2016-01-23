@@ -1,5 +1,11 @@
 ﻿@model JuniorDoctorsStrike.Web.ViewModels.IndexViewModel
 
+@section BeforeEndOfHead
+{
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="~/Assets/jquery.signalR-2.2.0.min.js"></script>
+}
+
 <section id="tweets">
     @if (Model.Tweets != null && Model.Tweets.Any())
     {

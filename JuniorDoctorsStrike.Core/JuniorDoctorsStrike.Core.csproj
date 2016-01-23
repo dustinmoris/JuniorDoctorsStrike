@@ -35,9 +35,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IStatusUpdateService.cs" />
+    <Compile Include="IMessagesService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatusUpdateService.cs" />
+    <Compile Include="MessagesService.cs" />
+    <Compile Include="StatusUpdateHub.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JuniorDoctorsStrike.Common\JuniorDoctorsStrike.Common.csproj">

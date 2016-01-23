@@ -4,7 +4,7 @@ using JuniorDoctorsStrike.Common;
 
 namespace JuniorDoctorsStrike.Core
 {
-    public interface IStatusUpdateService
+    public interface IMessagesService
     {
         Task<IEnumerable<Message>> GetMessagesAsync();
         Task<IEnumerable<Message>> GetMessagesAsync(long sinceId);

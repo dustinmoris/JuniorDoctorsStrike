@@ -7,16 +7,16 @@ namespace JuniorDoctorsStrike.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IStatusUpdateService _statusUpdateService;
+        private readonly IMessagesService _messagesService;
 
-        public HomeController(IStatusUpdateService statusUpdateService)
+        public HomeController(IMessagesService messagesService)
         {
-            _statusUpdateService = statusUpdateService;
+            _messagesService = messagesService;
         }
 
         public async Task<ActionResult> Index()
         {
-            var tweets = await _statusUpdateService.GetMessagesAsync();
+            var tweets = await _messagesService.GetMessagesAsync();
             var viewModel = new IndexViewModel { Tweets = tweets };
             return View(viewModel);
         }
