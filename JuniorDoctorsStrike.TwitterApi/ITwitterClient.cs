@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using JuniorDoctorsStrike.Common;
 
 namespace JuniorDoctorsStrike.TwitterApi
 {
     public interface ITwitterClient
     {
-        Task<IEnumerable<Tweet>> SearchRecent(params string[] values);
-        Task<IEnumerable<Tweet>> Search(IEnumerable<string> values, ResultType resultType);
+        Task<IEnumerable<Message>> SearchAsync(IEnumerable<string> values, ResultType resultType);
     }
 }

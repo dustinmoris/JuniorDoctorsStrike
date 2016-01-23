@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 
-namespace JuniorDoctorsStrike.TwitterApi
+namespace JuniorDoctorsStrike.Common
 {
-    public class Tweet
+    public class Message
     {
         public DateTime Created { get; set; }
         public TimeSpan TimeSinceCreated { get; set; }

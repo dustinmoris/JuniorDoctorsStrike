@@ -1,4 +1,4 @@
-namespace JuniorDoctorsStrike.Common
+namespace JuniorDoctorsStrike.Common.Web
 {
     public interface IUrlEncoder
     {

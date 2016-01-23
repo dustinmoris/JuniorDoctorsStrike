@@ -1,4 +1,4 @@
-﻿using JuniorDoctorsStrike.TwitterApi;
+﻿using JuniorDoctorsStrike.Core;
 using JuniorDoctorsStrike.Web.ViewModels;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -7,18 +7,17 @@ namespace JuniorDoctorsStrike.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ITwitterClient _twitterClient;
+        private readonly IStatusUpdateService _statusUpdateService;
 
-        public HomeController(ITwitterClient twitterClient)
+        public HomeController(IStatusUpdateService statusUpdateService)
         {
-            _twitterClient = twitterClient;
+            _statusUpdateService = statusUpdateService;
         }
 
         public async Task<ActionResult> Index()
         {
-            //var tweets = await _twitterClient.SearchRecent("#JuniorDoctorsStrike");
-            //var viewModel = new IndexViewModel { Tweets = tweets };
-            var viewModel = new IndexViewModel();
+            var tweets = await _statusUpdateService.GetMessagesAsync();
+            var viewModel = new IndexViewModel { Tweets = tweets };
             return View(viewModel);
         }
 

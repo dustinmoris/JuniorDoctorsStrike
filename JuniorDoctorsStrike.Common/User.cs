@@ -1,4 +1,4 @@
-﻿namespace JuniorDoctorsStrike.TwitterApi
+﻿namespace JuniorDoctorsStrike.Common
 {
     public class User
     {

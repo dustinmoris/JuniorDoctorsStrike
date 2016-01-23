@@ -44,12 +44,12 @@
   <ItemGroup>
     <Compile Include="ITwitterApiConfiguration.cs" />
     <Compile Include="ITwitterClient.cs" />
-    <Compile Include="Tweet.cs" />
+    <Compile Include="ITwitterHashtagParser.cs" />
     <Compile Include="TwitterApiConfiguration.cs" />
     <Compile Include="TwitterClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultType.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="TwitterHashtagParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JuniorDoctorsStrike.Common\JuniorDoctorsStrike.Common.csproj">
@@ -60,6 +60,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

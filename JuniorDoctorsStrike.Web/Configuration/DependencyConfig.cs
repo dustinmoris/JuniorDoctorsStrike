@@ -4,6 +4,8 @@ using JuniorDoctorsStrike.Common;
 using JuniorDoctorsStrike.TwitterApi;
 using JuniorDoctorsStrike.Web.Controllers;
 using System.Web.Mvc;
+using JuniorDoctorsStrike.Common.Web;
+using JuniorDoctorsStrike.Core;
 
 namespace JuniorDoctorsStrike.Web.Configuration
 {
@@ -13,8 +15,11 @@ namespace JuniorDoctorsStrike.Web.Configuration
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<UrlEncoder>().As<IUrlEncoder>();
+            builder.RegisterType<HtmlLinkParser>().As<IHtmlLinkParser>();
             builder.RegisterType<TwitterApiConfiguration>().As<ITwitterApiConfiguration>();
+            builder.RegisterType<TwitterHashtagParser>().As<ITwitterHashtagParser>();
             builder.RegisterType<TwitterClient>().As<ITwitterClient>();
+            builder.RegisterType<StatusUpdateService>().As<IStatusUpdateService>();
             builder.RegisterType<HomeController>().AsSelf();
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(builder.Build()));

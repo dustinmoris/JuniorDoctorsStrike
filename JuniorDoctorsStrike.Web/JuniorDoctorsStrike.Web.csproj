@@ -154,6 +154,10 @@
       <Project>{6A4E53AF-0D2C-4483-845A-FBF28834CAA5}</Project>
       <Name>JuniorDoctorsStrike.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\JuniorDoctorsStrike.Core\JuniorDoctorsStrike.Core.csproj">
+      <Project>{1966cb5b-1b30-4955-a23c-92d8daf96d34}</Project>
+      <Name>JuniorDoctorsStrike.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\JuniorDoctorsStrike.TwitterApi\JuniorDoctorsStrike.TwitterApi.csproj">
       <Project>{AD935009-DDE5-4028-B899-BC693260BCE1}</Project>
       <Name>JuniorDoctorsStrike.TwitterApi</Name>

@@ -1,34 +1,35 @@
 ﻿using JuniorDoctorsStrike.Common;
+using JuniorDoctorsStrike.Common.Web;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace JuniorDoctorsStrike.TwitterApi
 {
     public class TwitterClient : ITwitterClient
     {
-        private readonly ITwitterApiConfiguration _apiConfiguration;
+        private readonly ITwitterApiConfiguration _configuration;
         private readonly IUrlEncoder _urlEncoder;
+        private readonly IHtmlLinkParser _htmlLinkParser;
+        private readonly ITwitterHashtagParser _hashtagParser;
 
         public TwitterClient(
-            ITwitterApiConfiguration apiConfiguration,
-            IUrlEncoder urlEncoder)
+            ITwitterApiConfiguration configuration,
+            IUrlEncoder urlEncoder,
+            IHtmlLinkParser htmlLinkParser,
+            ITwitterHashtagParser hashtagParser)
         {
-            _apiConfiguration = apiConfiguration;
+            _configuration = configuration;
             _urlEncoder = urlEncoder;
+            _htmlLinkParser = htmlLinkParser;
+            _hashtagParser = hashtagParser;
         }
 
-        public async Task<IEnumerable<Tweet>> SearchRecent(params string[] values)
-        {
-            return await Search(values, ResultType.Recent);
-        }
-
-        public async Task<IEnumerable<Tweet>> Search(IEnumerable<string> values, ResultType resultType)
+        public async Task<IEnumerable<Message>> SearchAsync(IEnumerable<string> values, ResultType resultType)
         {
             var client = CreateHttpClient();
             var query = CreateQuery(values);
@@ -49,10 +50,10 @@ namespace JuniorDoctorsStrike.TwitterApi
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri(_apiConfiguration.BaseUrl)
+                BaseAddress = new Uri(_configuration.BaseUrl)
             };
 
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiConfiguration.AccessToken}");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_configuration.AccessToken}");
 
             return client;
         }
@@ -77,7 +78,7 @@ namespace JuniorDoctorsStrike.TwitterApi
             }
         }
 
-        private static IEnumerable<Tweet> ParseTweets(dynamic payload)
+        private IEnumerable<Message> ParseTweets(dynamic payload)
         {
             foreach (var tweet in payload.statuses)
             {
@@ -85,20 +86,21 @@ namespace JuniorDoctorsStrike.TwitterApi
                     tweet.created_at.ToString(),
                     "ddd MMM dd HH:mm:ss zzz yyyy",
                     CultureInfo.InvariantCulture);
-                
-                var text = tweet.text.ToString();
 
-                text = ConvertUrlsToLinks(text);
+                var hashtags = new List<string>();
 
-                // Convert hashtags into links
                 foreach (var hashtag in tweet.entities.hashtags)
                 {
-                    text = text.Replace($"#{hashtag.text}", $"<a href='https://twitter.com/search?q=%23{hashtag.text}'>#{hashtag.text}</a>");
+                    hashtags.Add(hashtag.text.ToString());
                 }
 
-                yield return new Tweet
+                var rawText = tweet.text.ToString();
+                var parsedText = _htmlLinkParser.ParseHtmlLinks(rawText);
+                var parsedTextWithHashtags = _hashtagParser.ConvertHashtagsToLinks(parsedText, hashtags);
+
+                yield return new Message
                 {
-                    Text = text,
+                    Text = parsedTextWithHashtags,
                     Created = created,
                     TimeSinceCreated = DateTime.Now - created,
                     User = new User
@@ -107,26 +109,6 @@ namespace JuniorDoctorsStrike.TwitterApi
                          ProfilePictureUrl = tweet.user.profile_image_url
                     }
                 };
-            }
-        }
-
-        private static string ConvertUrlsToLinks(string text)
-        {
-            const string pattern = @"((www\.|(http|https|ftp|news|file)+\:\/\/)[&#95;.a-z0-9-]+\.[a-z0-9\/&#95;:@=.+?,##%&~-]*[^.|\'|\# |!|\(|?|,| |>|<|;|\)])";
-
-            var regex = new Regex(pattern, RegexOptions.IgnoreCase);
-
-            return regex.Replace(text, "<a href=\"$1\">$1</a>").Replace("href=\"www", "href=\"http://www");
-        }
-
-        private async Task<bool> IsImageUrl(string url)
-        {
-            var request = WebRequest.Create(url);
-            request.Method = "HEAD";
-
-            using (var response = await request.GetResponseAsync())
-            {
-                return response.ContentType.ToLower(CultureInfo.InvariantCulture).StartsWith("image/");
             }
         }
     }
