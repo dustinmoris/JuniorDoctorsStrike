@@ -16,3 +16,14 @@ before_build:
 build:
   publish_wap: true
   verbosity: normal
+deploy:
+  provider: WebDeploy
+  server: https://juniordoctorsstrike.scm.azurewebsites.net:443/msdeploy.axd?site=juniordoctorsstrike
+  website: juniordoctorsstrike
+  username: $juniordoctorsstrike
+  password:
+    secure: ZJ+sHOVWyH5y4qnJQBhFDe20KBwJIPFigwpEHXuEse15O0TekPBDCLsHqanEB/qARvAQ4dAiHzRx4eDj69LZOw==
+  remove_files: true
+  app_offline: true
+  on:
+    branch: master
