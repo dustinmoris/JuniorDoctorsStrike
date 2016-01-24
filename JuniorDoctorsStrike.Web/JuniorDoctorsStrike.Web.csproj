@@ -86,7 +86,9 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\site.js" />
+    <Content Include="Assets\site.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Global.asax" />
     <Content Include="packages.config" />
     <Content Include="Views\Shared\_Master.cshtml" />
@@ -103,9 +105,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\fist.png" />
-    <Content Include="Assets\site.css" />
-    <Content Include="favicon.ico" />
+    <Content Include="Assets\junior-doctors-strike.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\site.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
