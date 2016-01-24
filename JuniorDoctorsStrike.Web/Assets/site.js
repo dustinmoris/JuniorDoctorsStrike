@@ -1,6 +1,6 @@
 ﻿$(function () {
 
-    var tweets = $("#tweets");
+    var messageStream = $("#messages");
 
     /* ---------------------
      * Load initial messages
@@ -10,7 +10,7 @@
         for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
             var html = formatMessage(message);
-            tweets.append(html);
+            messageStream.append(html);
         }
     });
 
@@ -31,7 +31,7 @@ function updateMessages() {
         for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
             var html = formatMessage(message);
-            window.tweets.prepend(html);
+            window.messageStream.prepend(html);
         }
     });
 
@@ -42,15 +42,15 @@ function formatMessage(message) {
     var created = convertToDate(message.Created);
 
     var html =
-        "<div class='tweet'>" +
+        "<div class='message'>" +
         "<input type='hidden' name='id' value='" + message.Id + "'/>" +
         "<input type='hidden' name='created' value='" + created + "'/>" +
         "<img class='user-picture' src='" + message.User.ImageUrl + "' alt='" + message.User.Name + "'/>" +
-        "<p class='tweet-header'>" +
+        "<p class='message-header'>" +
         "<span class='user-name'>" + message.User.Name + "</span>" +
-        "<span class='tweet-info'>" + created + "</span>" +
+        "<span class='message-timeinfo'>" + created + "</span>" +
         "</p>" +
-        "<p class='tweet-message'>" + message.Text + "</p>" +
+        "<p class='message-text'>" + message.Text + "</p>" +
         "</div>";
     return html;
 }

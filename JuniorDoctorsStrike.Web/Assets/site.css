@@ -75,7 +75,7 @@ a {
     text-decoration: none;
 }
 
-.tweet {
+.message {
     display: flex;
     -ms-flex-flow: row wrap;
     -webkit-flex-flow: row wrap;
@@ -98,7 +98,7 @@ a {
     height: 48px;
 }
 
-.tweet-header {
+.message-header {
     display: inline-block;
     margin: .3em 0 0 10px;
     padding: 0;
@@ -110,21 +110,21 @@ a {
     font-weight: 600;
 }
 
-.tweet-info {
+.message-timeinfo {
     margin-top: .2em;
     display: block;
     font-size: .8em;
     color: #888;
 }
 
-.tweet-message {
+.message-text {
     flex-basis: 100%;
     margin-top: 1em;
     font-size: .95em;
     line-height: 1.4em;
 }
 
-#tweets-aside div {
+#messages-aside div {
     margin: 7px;
     padding: 1em;
     border: 1px solid #e1e1e1;
@@ -133,16 +133,16 @@ a {
     border-radius: 2px;
 }
 
-#tweets-aside h2 {
+#messages-aside h2 {
     color: #777;
 }
 
-#tweets-aside h2,
-#tweets-aside h3 {
+#messages-aside h2,
+#messages-aside h3 {
     margin-top: 0;
 }
 
-#tweets-aside p {
+#messages-aside p {
     line-height: 1.5em;
     font-size: .9em;
 }
@@ -220,22 +220,22 @@ footer {
         border-radius: 0;
     }
 
-    #tweets {
+    #messages {
         margin-top: 15px;
         max-width: 600px;
     }
 
-    #tweets-aside {
+    #messages-aside {
         margin: 15px 0 0 15px;
         max-width: 285px;
         color: #333;
     }
 
-        #tweets-aside div {
+        #messages-aside div {
             margin: 0 0 15px 0;
         }
 
-    .tweet {
+    .message {
         display: block;
         margin: 0;
         padding: 10px;
@@ -243,14 +243,14 @@ footer {
         border-bottom: 0;
     }
 
-        .tweet:first-child {
+        .message:first-child {
             -ms-border-top-left-radius: 2px;
             border-top-left-radius: 2px;
             -ms-border-top-right-radius: 2px;
             border-top-right-radius: 2px;
         }
 
-        .tweet:last-child {
+        .message:last-child {
             -ms-border-bottom-left-radius: 2px;
             border-bottom-left-radius: 2px;
             -ms-border-bottom-right-radius: 2px;
@@ -258,18 +258,18 @@ footer {
             border-bottom: 1px solid #e1e1e1;
         }
 
-        .user-picture, .tweet-header {
+        .user-picture, .message-header {
             float: left;
         }
 
-        .tweet-message {
+        .message-text {
             float: left;
             width: 520px;
             margin-top: .5em;
             margin-left: 10px;
         }
 
-        .tweet:after {
+        .message:after {
             visibility: hidden;
      display: block;
      font-size: 0;
@@ -278,11 +278,11 @@ footer {
      height: 0;
         }
 
-    .tweet-info {
+    .message-timeinfo {
         display: inline;
     }
 
-        .tweet-info:before {
+        .message-timeinfo:before {
             content: " - ";
         }
 
