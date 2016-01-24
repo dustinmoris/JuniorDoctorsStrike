@@ -6,7 +6,6 @@ namespace JuniorDoctorsStrike.Common
     {
         public long Id { get; set; }
         public DateTime Created { get; set; }
-        public TimeSpan TimeSinceCreated { get; set; }
         public User User { get; set; }
         public string Text { get; set; }
     }

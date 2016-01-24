@@ -1,11 +1,10 @@
 using Autofac;
 using Autofac.Integration.Mvc;
-using JuniorDoctorsStrike.Common;
+using JuniorDoctorsStrike.Common.Web;
+using JuniorDoctorsStrike.Core;
 using JuniorDoctorsStrike.TwitterApi;
 using JuniorDoctorsStrike.Web.Controllers;
 using System.Web.Mvc;
-using JuniorDoctorsStrike.Common.Web;
-using JuniorDoctorsStrike.Core;
 
 namespace JuniorDoctorsStrike.Web.Configuration
 {

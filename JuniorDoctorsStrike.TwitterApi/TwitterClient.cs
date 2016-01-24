@@ -4,9 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Net;
 using System.Net.Http;
-using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace JuniorDoctorsStrike.TwitterApi
@@ -127,7 +125,6 @@ namespace JuniorDoctorsStrike.TwitterApi
                     Id = id,
                     Text = parsedTextWithHashtags,
                     Created = created,
-                    TimeSinceCreated = DateTime.Now - created,
                     User = new User
                     {
                          Name = tweet.user.name,
