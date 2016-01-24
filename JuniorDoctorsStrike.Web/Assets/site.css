@@ -147,12 +147,55 @@ a {
     font-size: .9em;
 }
 
+#load-more-btn, #show-new-btn {
+    display: block;
+    margin: 7px;
+    padding: 1em 0;
+    border: 1px solid #e1e1e1;
+    -ms-border-radius: 2px;
+    border-radius: 2px;
+    background: #f1f1f1;
+    text-align: center;
+}
+
 footer {
     margin: 10px;
     padding: 0;
     color: #888;
     font-size: .8em;
 }
+
+#about {
+    display: flex;
+    -ms-flex-flow: row wrap;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+}
+
+.about-section {
+    margin: 7px;
+    border: 1px solid #e1e1e1;
+    padding: 0 1em;
+    background: #fff;
+    -ms-border-radius: 2px;
+    border-radius: 2px;
+}
+
+    .about-section p {
+        font-size: .95em;
+        color: #444;
+        line-height: 1.5em;
+    }
+
+    .about-section iframe {
+        width: 100%;
+        min-height: 250px;
+        margin-bottom: 1em;
+    }
+
+    .about-section ul li {
+        margin: .5em 0;
+    }
 
 @media all and (min-width: 917px) {
 
@@ -199,26 +242,26 @@ footer {
         align-items: flex-start;
     }
 
-    header nav ul li {
-        flex-grow: 0;
-    }
+        header nav ul li {
+            flex-grow: 0;
+        }
 
-    header nav ul li a {
-        display: inline-block;
-        border: 0;
-        background: #fff;
-        color: #666;
-    }
+            header nav ul li a {
+                display: inline-block;
+                border: 0;
+                background: #fff;
+                color: #666;
+            }
 
-    header nav ul li a:hover {
-        color: #8C001A;
-        padding: .5em 0 .1em 0;
-        margin-left: 1em;
-        margin-right: 1em;
-        border-bottom: 3px solid #8C001A;
-        -ms-border-radius: 0;
-        border-radius: 0;
-    }
+                header nav ul li a:hover {
+                    color: #8C001A;
+                    padding: .5em 0 .1em 0;
+                    margin-left: 1em;
+                    margin-right: 1em;
+                    border-bottom: 3px solid #8C001A;
+                    -ms-border-radius: 0;
+                    border-radius: 0;
+                }
 
     #messages {
         margin-top: 15px;
@@ -258,25 +301,25 @@ footer {
             border-bottom: 1px solid #e1e1e1;
         }
 
-        .user-picture, .message-header {
-            float: left;
-        }
+    .user-picture, .message-header {
+        float: left;
+    }
 
-        .message-text {
-            float: left;
-            width: 520px;
-            margin-top: .5em;
-            margin-left: 10px;
-        }
+    .message-text {
+        float: left;
+        width: 520px;
+        margin-top: .5em;
+        margin-left: 10px;
+    }
 
-        .message:after {
-            visibility: hidden;
-     display: block;
-     font-size: 0;
-     content: " ";
-     clear: both;
-     height: 0;
-        }
+    .message:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
 
     .message-timeinfo {
         display: inline;
@@ -286,7 +329,27 @@ footer {
             content: " - ";
         }
 
+    #load-more-btn, #show-new-btn {
+        margin: 7px 1px;
+    }
+
     footer {
         margin: 1.5em 0 2em 0;
+    }
+
+    #about-left, #about-right {
+        max-width: 50%;
+    }
+
+        #about-left .about-section {
+            margin: 10px 5px 0 0;
+        }
+
+        #about-right .about-section {
+            margin: 10px 0 0 5px;
+        }
+
+    .about-section {
+        margin: 0;
     }
 }

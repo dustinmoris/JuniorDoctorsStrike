@@ -39,10 +39,15 @@ namespace JuniorDoctorsStrike.TwitterApi
         public async Task<IEnumerable<Message>> SearchAsync(
             IEnumerable<string> values,
             ResultType resultType,
+            ResultTime resultTime,
             int count,
-            long sinceId)
+            long id)
         {
-            return await SearchAsync(values, resultType, count, $"&since_id={sinceId}");
+            var additionalParam = resultTime == ResultTime.SinceId 
+                ? $"&since_id={id}" 
+                : $"&max_id={id}";
+
+            return await SearchAsync(values, resultType, count, additionalParam);
         }
 
         private async Task<IEnumerable<Message>> SearchAsync(

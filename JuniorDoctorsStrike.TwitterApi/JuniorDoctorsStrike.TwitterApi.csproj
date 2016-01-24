@@ -45,6 +45,7 @@
     <Compile Include="ITwitterApiConfiguration.cs" />
     <Compile Include="ITwitterClient.cs" />
     <Compile Include="ITwitterHashtagParser.cs" />
+    <Compile Include="ResultTime.cs" />
     <Compile Include="TwitterApiConfiguration.cs" />
     <Compile Include="TwitterClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

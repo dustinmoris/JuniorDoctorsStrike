@@ -14,7 +14,8 @@ namespace JuniorDoctorsStrike.TwitterApi
         Task<IEnumerable<Message>> SearchAsync(
             IEnumerable<string> values,
             ResultType resultType,
+            ResultTime resultTime,
             int count,
-            long sinceId);
+            long id);
     }
 }

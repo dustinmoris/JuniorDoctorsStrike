@@ -41,6 +41,12 @@ namespace JuniorDoctorsStrike.Web.Configuration
                 url: "Api/MessagesSince/{sinceId}",
                 defaults: new { controller = "Api", action = "MessagesSince" }
             );
+
+            routes.MapRoute(
+                name: "MessagesUntil",
+                url: "Api/MessagesUntil/{maxId}",
+                defaults: new { controller = "Api", action = "MessagesUntil" }
+            );
         }
     }
 }

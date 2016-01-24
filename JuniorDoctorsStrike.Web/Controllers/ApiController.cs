@@ -22,7 +22,14 @@ namespace JuniorDoctorsStrike.Web.Controllers
 
         public async Task<ActionResult> MessagesSince(long sinceId)
         {
-            var messages = await _messagesService.GetMessagesAsync(sinceId);
+            var messages = await _messagesService.GetMessagesSinceAsync(sinceId);
+
+            return Json(messages, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> MessagesUntil(long maxId)
+        {
+            var messages = await _messagesService.GetMessagesUntilAsync(maxId);
 
             return Json(messages, JsonRequestBehavior.AllowGet);
         }

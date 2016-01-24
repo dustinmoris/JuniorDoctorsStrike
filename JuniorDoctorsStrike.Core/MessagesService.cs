@@ -27,9 +27,24 @@ namespace JuniorDoctorsStrike.Core
             return await _twitterClient.SearchAsync(_hashtagsToObserve, ResultType.Recent, Count).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Message>> GetMessagesAsync(long sinceId)
+        public async Task<IEnumerable<Message>> GetMessagesSinceAsync(long sinceId)
         {
-            return await _twitterClient.SearchAsync(_hashtagsToObserve, ResultType.Recent, Count, sinceId).ConfigureAwait(false);
+            return await _twitterClient.SearchAsync(
+                _hashtagsToObserve, 
+                ResultType.Recent, 
+                ResultTime.SinceId, 
+                Count, 
+                sinceId).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Message>> GetMessagesUntilAsync(long maxId)
+        {
+            return await _twitterClient.SearchAsync(
+                _hashtagsToObserve,
+                ResultType.Recent,
+                ResultTime.MaxId,
+                Count,
+                maxId).ConfigureAwait(false);
         }
     }
 }

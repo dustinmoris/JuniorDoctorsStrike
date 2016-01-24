@@ -7,6 +7,7 @@ namespace JuniorDoctorsStrike.Core
     public interface IMessagesService
     {
         Task<IEnumerable<Message>> GetMessagesAsync();
-        Task<IEnumerable<Message>> GetMessagesAsync(long sinceId);
+        Task<IEnumerable<Message>> GetMessagesSinceAsync(long sinceId);
+        Task<IEnumerable<Message>> GetMessagesUntilAsync(long maxId);
     }
 }

@@ -1,19 +1,33 @@
 ﻿
 var intervalInSeconds = 30;
 var interval = intervalInSeconds * 1000;
+var newMessages = new Array();
 
-function updateMessages() {
-    var sinceId = $(".message:first-child > input[name=id]").val() + 1;
+function loadNewMessagesTicker() {
+    var sinceId = $(".message:first-child > input[name=id]").val();
 
     $.get("/api/messagesSince/" + sinceId, function (messages) {
-        for (var i = 0; i < messages.length; i++) {
-            var message = messages[i];
-            var html = formatMessage(message);
-            $("#messages").prepend(html);
+        if (messages.length > 0) {
+            newMessages = messages;
+            $("#show-new-btn").text("Show " + newMessages.length + " new messages");
+            $("#show-new-btn").show();
         }
     });
 
-    setTimeout(updateMessages, interval);
+    setTimeout(loadNewMessagesTicker, interval);
+}
+
+function loadOlderMessages() {
+    var maxId = $(".message:last-child > input[name=id]").val();
+
+    $.get("/api/messagesUntil/" + maxId, function (messages) {
+        for (var i = 0; i < messages.length; i++) {
+            var message = messages[i];
+            var html = formatMessage(message);
+            $("#message-stream").append(html);
+        }
+        $("#load-more-btn").show();
+    });
 }
 
 function formatMessage(message) {
@@ -40,6 +54,8 @@ function convertToDate(value) {
 
 $(function () {
 
+    $("#show-new-btn").hide();
+
     /* ---------------------
      * Load initial messages
      * ---------------------*/
@@ -48,7 +64,7 @@ $(function () {
         for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
             var html = formatMessage(message);
-            $("#messages").append(html);
+            $("#message-stream").append(html);
         }
     });
 
@@ -56,5 +72,25 @@ $(function () {
      * Poll messages
      * ---------------------*/
 
-    setTimeout(updateMessages, interval);
+    setTimeout(loadNewMessagesTicker, interval);
+    
+    /* ---------------------
+     * Register Button events
+     * ---------------------*/
+
+    $("#load-more-btn").click(function (event) {
+        event.preventDefault();
+        $(this).hide();
+        loadOlderMessages();
+    });
+
+    $("#show-new-btn").click(function (event) {
+        event.preventDefault();
+        for (var i = 0; i < newMessages.length; i++) {
+            var message = newMessages[i];
+            var html = formatMessage(message);
+            $("#message-stream").prepend(html);
+        }
+        $(this).hide();
+    });
 });
