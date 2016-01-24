@@ -131,7 +131,7 @@ namespace JuniorDoctorsStrike.TwitterApi
                     User = new User
                     {
                          Name = tweet.user.name,
-                         ProfilePictureUrl = tweet.user.profile_image_url
+                         ImageUrl = tweet.user.profile_image_url
                     }
                 };
             }

@@ -15,7 +15,7 @@ namespace JuniorDoctorsStrike.Web.Configuration
             routes.MapRoute(
                 name: "Index",
                 url: "",
-                defaults: new { controller = "Home", action = "Index", page = 1 }
+                defaults: new { controller = "Home", action = "Index" }
             );
 
             routes.MapRoute(
@@ -28,6 +28,18 @@ namespace JuniorDoctorsStrike.Web.Configuration
                 name: "Stories",
                 url: "Stories",
                 defaults: new { controller = "Home", action = "Stories" }
+            );
+
+            routes.MapRoute(
+                name: "Messages",
+                url: "Api/Messages",
+                defaults: new { controller = "Api", action = "Messages" }
+            );
+
+            routes.MapRoute(
+                name: "MessagesSince",
+                url: "Api/MessagesSince/{sinceId}",
+                defaults: new { controller = "Api", action = "MessagesSince" }
             );
         }
     }

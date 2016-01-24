@@ -38,7 +38,6 @@
     <Compile Include="IMessagesService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MessagesService.cs" />
-    <Compile Include="StatusUpdateTicker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JuniorDoctorsStrike.Common\JuniorDoctorsStrike.Common.csproj">
