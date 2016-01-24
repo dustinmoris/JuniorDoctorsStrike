@@ -1,16 +1,27 @@
 ﻿
-var intervalInSeconds = 30;
+var intervalInSeconds = 10;
 var interval = intervalInSeconds * 1000;
 var newMessages = new Array();
+var messageIds = new Array();
 
 function loadNewMessagesTicker() {
-    var sinceId = $(".message:first-child > input[name=id]").val();
+    var sinceId = messageIds[0];
 
     $.get("/api/messagesSince/" + sinceId, function (messages) {
         if (messages.length > 0) {
-            newMessages = messages;
-            $("#show-new-btn").text("Show " + newMessages.length + " new messages");
-            $("#show-new-btn").show();
+            for (var i = messages.length - 1; i >= 0; i--) {
+                var message = messages[i];
+                
+                if ($.inArray(message.Id, messageIds) === -1) {
+                    newMessages.unshift(message);
+                    messageIds.unshift(message.Id);
+                }
+            }
+
+            if (newMessages.length > 0) {
+                $("#show-new-btn").text("Show " + newMessages.length + " new messages");
+                $("#show-new-btn").show();
+            }
         }
     });
 
@@ -21,7 +32,8 @@ function loadOlderMessages() {
     var maxId = $(".message:last-child > input[name=id]").val();
 
     $.get("/api/messagesUntil/" + maxId, function (messages) {
-        for (var i = 0; i < messages.length; i++) {
+        // skipping the first message, because it is a duplicate
+        for (var i = 1; i < messages.length; i++) {
             var message = messages[i];
             var html = formatMessage(message);
             $("#message-stream").append(html);
@@ -40,7 +52,7 @@ function formatMessage(message) {
         "<img class='user-picture' src='" + message.User.ImageUrl + "' alt='" + message.User.Name + "'/>" +
         "<p class='message-header'>" +
         "<span class='user-name'>" + message.User.Name + "</span>" +
-        "<span class='message-timeinfo'>" + created + "</span>" +
+        "<span class='message-timeinfo'>" + created.toString().replace(" GMT+0000 (GMT Standard Time)", "") + "</span>" +
         "</p>" +
         "<p class='message-text'>" + message.Text + "</p>" +
         "</div>";
@@ -56,27 +68,16 @@ $(function () {
 
     $("#show-new-btn").hide();
 
-    /* ---------------------
-     * Load initial messages
-     * ---------------------*/
-
     $.get("/api/messages", function (messages) {
         for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
             var html = formatMessage(message);
             $("#message-stream").append(html);
+            messageIds.push(message.Id);
         }
+
+        setTimeout(loadNewMessagesTicker, interval);
     });
-
-    /* ---------------------
-     * Poll messages
-     * ---------------------*/
-
-    setTimeout(loadNewMessagesTicker, interval);
-    
-    /* ---------------------
-     * Register Button events
-     * ---------------------*/
 
     $("#load-more-btn").click(function (event) {
         event.preventDefault();
@@ -86,10 +87,11 @@ $(function () {
 
     $("#show-new-btn").click(function (event) {
         event.preventDefault();
-        for (var i = 0; i < newMessages.length; i++) {
+        for (var i = newMessages.length - 1; i >= 0; i--) {
             var message = newMessages[i];
             var html = formatMessage(message);
             $("#message-stream").prepend(html);
+            newMessages.splice(i, 1);
         }
         $(this).hide();
     });
