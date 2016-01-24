@@ -1,37 +1,15 @@
-﻿$(function () {
-
-    var messageStream = $("#messages");
-
-    /* ---------------------
-     * Load initial messages
-     * ---------------------*/
-
-    $.get("/api/messages", function (messages) {
-        for (var i = 0; i < messages.length; i++) {
-            var message = messages[i];
-            var html = formatMessage(message);
-            messageStream.append(html);
-        }
-    });
-
-    /* ---------------------
-     * Poll messages
-     * ---------------------*/
-
-    var intervalInSeconds = 5;
-    var interval = intervalInSeconds * 1000;
-
-    setTimeout(updateMessages, interval);
-});
+﻿
+var intervalInSeconds = 30;
+var interval = intervalInSeconds * 1000;
 
 function updateMessages() {
-    var sinceId = 0; // ToDo
+    var sinceId = $(".message:first-child > input[name=id]").val() + 1;
 
     $.get("/api/messagesSince/" + sinceId, function (messages) {
         for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
             var html = formatMessage(message);
-            window.messageStream.prepend(html);
+            $("#messages").prepend(html);
         }
     });
 
@@ -59,3 +37,24 @@ function convertToDate(value) {
     var a = /\/Date\((\d*)\)\//.exec(value);
     return new Date(+a[1]);
 }
+
+$(function () {
+
+    /* ---------------------
+     * Load initial messages
+     * ---------------------*/
+
+    $.get("/api/messages", function (messages) {
+        for (var i = 0; i < messages.length; i++) {
+            var message = messages[i];
+            var html = formatMessage(message);
+            $("#messages").append(html);
+        }
+    });
+
+    /* ---------------------
+     * Poll messages
+     * ---------------------*/
+
+    setTimeout(updateMessages, interval);
+});
