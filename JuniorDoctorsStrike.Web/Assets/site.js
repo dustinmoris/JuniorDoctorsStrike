@@ -52,7 +52,7 @@ function formatMessage(message) {
         "<img class='user-picture' src='" + message.User.ImageUrl + "' alt='" + message.User.Name + "'/>" +
         "<p class='message-header'>" +
         "<span class='user-name'>" + message.User.Name + "</span>" +
-        "<span class='message-timeinfo'>" + created.toString().replace(" GMT+0000 (GMT Standard Time)", "") + "</span>" +
+        "<span class='message-timeinfo'>" + created.toString().substring(0, 25) + "</span>" +
         "</p>" +
         "<p class='message-text'>" + message.Text + "</p>" +
         "</div>";
