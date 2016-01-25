@@ -1,5 +1,5 @@
 ﻿
-var intervalInSeconds = 10;
+var intervalInSeconds = 20;
 var interval = intervalInSeconds * 1000;
 var newMessages = new Array();
 var messageIds = new Array();

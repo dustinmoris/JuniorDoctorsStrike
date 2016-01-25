@@ -165,6 +165,28 @@ footer {
     font-size: .8em;
 }
 
+#pinned {
+    margin-bottom: 1em;
+}
+
+    #pinned p {
+        width: 100%;
+        margin: 0 0 .5em 0;
+        padding: 0;
+        font-weight: bold;
+        font-size: .85em;
+        color: #666;
+    }
+
+    #pinned iframe {
+        flex-grow: 1;
+        display: block;
+    }
+
+    #pinned ul li {
+        margin: .8em 0;
+    }
+
 #about {
     display: flex;
     -ms-flex-flow: row wrap;
@@ -336,6 +358,24 @@ footer {
     footer {
         margin: 1.5em 0 2em 0;
     }
+
+    #pinned {
+        width: 600px;
+        margin-bottom: 1em;
+    }
+
+        #pinned .message {
+            display: flex;
+        }
+
+        #pinned iframe {
+            max-width: 300px;
+        }
+
+        #pinned ul {
+            margin: .5em 0;
+            max-width: 235px;
+        }
 
     #about-left, #about-right {
         max-width: 50%;
