@@ -85,7 +85,7 @@ namespace JuniorDoctorsStrike.TwitterApi
 
         private static string CreateQuery(IEnumerable<string> searchValues)
         {
-            return $"{string.Join(" ", searchValues)} AND -filter:retweets AND -filter:replies";
+            return $"{string.Join(" OR ", searchValues)} AND -filter:retweets AND -filter:replies";
         }
 
         private static string ConvertFromResultType(ResultType resultType)

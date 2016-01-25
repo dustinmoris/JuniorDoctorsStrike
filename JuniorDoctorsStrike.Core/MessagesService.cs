@@ -18,7 +18,10 @@ namespace JuniorDoctorsStrike.Core
 
             _hashtagsToObserve = new []
             {
-                "#JuniorDoctorsStrike"
+                "#JuniorDoctorsStrike",
+                "#juniorcontract",
+                "#notsafenotfair",
+                "#SaveOurNHS"
             };
         }
 
