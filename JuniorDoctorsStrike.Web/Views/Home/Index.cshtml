@@ -1,7 +1,20 @@
-﻿@section BeforeEndOfHead
+﻿@using JuniorDoctorsStrike.Web.Configuration
+@section BeforeEndOfHead
 {
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="~/Assets/site.js?v=2"></script>
+
+    @{
+        const int jsVersion = 2;
+
+        if (AppConfig.IsDebugMode())
+        {
+            <script src="~/Assets/site.js?v=@jsVersion"></script>
+        }
+        else
+        {
+            <script src="~/Assets/site.min.js?v=@jsVersion"></script>
+        }
+    }
 }
 
 <section id="messages">

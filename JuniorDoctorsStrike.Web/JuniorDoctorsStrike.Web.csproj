@@ -61,6 +61,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -86,9 +89,12 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\site.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets\junior-doctors-strike.png" />
+    <Content Include="Assets\site.min.js" />
+    <Content Include="Assets\site.min.css" />
+    <Content Include="Assets\site.js" />
+    <Content Include="Assets\site.css" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="packages.config" />
     <Content Include="Views\Shared\_Master.cshtml" />
@@ -97,6 +103,9 @@
     <Content Include="Views\web.config" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Stories.cshtml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -105,20 +114,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\junior-doctors-strike.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\site.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="favicon.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Configuration\AppConfig.cs" />
     <Compile Include="Configuration\DependencyConfig.cs" />
     <Compile Include="Configuration\RouteConfig.cs" />
     <Compile Include="Controllers\ApiController.cs" />
@@ -177,6 +173,16 @@
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>if $(ConfigurationName) == Debug (
+echo "Skipping CSS compression in debug mode."
+echo "Skipping JavaScript compression in debug mode."
+) else (
+C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoLogo -NonInteractive -Command "$(SolutionDir)MinifyCss.ps1" $(SolutionDir)
+
+C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoLogo -NonInteractive -Command "$(SolutionDir)MinifyJavaScript.ps1" $(SolutionDir)
+)</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

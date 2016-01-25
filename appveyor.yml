@@ -25,5 +25,6 @@ deploy:
     secure: ZJ+sHOVWyH5y4qnJQBhFDe20KBwJIPFigwpEHXuEse15O0TekPBDCLsHqanEB/qARvAQ4dAiHzRx4eDj69LZOw==
   remove_files: true
   app_offline: true
+  skip_dirs: '\\App_Data\\Logs;\\newrelic'
   on:
     branch: master

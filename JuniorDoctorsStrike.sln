@@ -21,6 +21,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{1F1BDF92-3B3A-4986-8A88-08F1B8EDF989}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
+		MinifyCss.ps1 = MinifyCss.ps1
+		MinifyJavaScript.ps1 = MinifyJavaScript.ps1
 	EndProjectSection
 EndProject
 Global
