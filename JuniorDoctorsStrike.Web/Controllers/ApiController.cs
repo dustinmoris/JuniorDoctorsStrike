@@ -6,30 +6,30 @@ namespace JuniorDoctorsStrike.Web.Controllers
 {
     public class ApiController : Controller
     {
-        private readonly IMessagesService _messagesService;
+        private readonly IMessageService _messageService;
 
-        public ApiController(IMessagesService messagesService)
+        public ApiController(IMessageService messageService)
         {
-            _messagesService = messagesService;
+            _messageService = messageService;
         }
 
         public async Task<ActionResult> Messages()
         {
-            var messages = await _messagesService.GetMessagesAsync();
+            var messages = await _messageService.GetMessagesAsync();
 
             return Json(messages, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<ActionResult> MessagesSince(long sinceId)
         {
-            var messages = await _messagesService.GetMessagesSinceAsync(sinceId);
+            var messages = await _messageService.GetMessagesSinceAsync(sinceId);
 
             return Json(messages, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<ActionResult> MessagesUntil(long maxId)
         {
-            var messages = await _messagesService.GetMessagesUntilAsync(maxId);
+            var messages = await _messageService.GetMessagesUntilAsync(maxId);
 
             return Json(messages, JsonRequestBehavior.AllowGet);
         }

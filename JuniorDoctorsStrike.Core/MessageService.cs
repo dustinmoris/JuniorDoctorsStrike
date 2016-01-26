@@ -5,30 +5,35 @@ using System.Threading.Tasks;
 
 namespace JuniorDoctorsStrike.Core
 {
-    public class MessagesService : IMessagesService
+    public class MessageService : IMessageService
     {
         private const int Count = 30;
 
         private readonly ITwitterClient _twitterClient;
-        private readonly IEnumerable<string> _hashtags; 
+        private readonly IEnumerable<string> _hashtagsToObserve; 
 
-        public MessagesService(
-            ITwitterClient twitterClient,
-            IEnumerable<string> hashtags)
+        public MessageService(ITwitterClient twitterClient)
         {
             _twitterClient = twitterClient;
-            _hashtags = hashtags;
+
+            _hashtagsToObserve = new []
+            {
+                "#JuniorDoctorsStrike",
+                "#juniorcontract",
+                "#notsafenotfair",
+                "#SaveOurNHS"
+            };
         }
 
         public async Task<IEnumerable<Message>> GetMessagesAsync()
         {
-            return await _twitterClient.SearchAsync(_hashtags, ResultType.Recent, Count).ConfigureAwait(false);
+            return await _twitterClient.SearchAsync(_hashtagsToObserve, ResultType.Recent, Count).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Message>> GetMessagesSinceAsync(long sinceId)
         {
             return await _twitterClient.SearchAsync(
-                _hashtags, 
+                _hashtagsToObserve, 
                 ResultType.Recent, 
                 ResultTime.SinceId, 
                 Count, 
@@ -38,7 +43,7 @@ namespace JuniorDoctorsStrike.Core
         public async Task<IEnumerable<Message>> GetMessagesUntilAsync(long maxId)
         {
             return await _twitterClient.SearchAsync(
-                _hashtags,
+                _hashtagsToObserve,
                 ResultType.Recent,
                 ResultTime.MaxId,
                 Count,
