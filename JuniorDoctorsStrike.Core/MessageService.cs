@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 namespace JuniorDoctorsStrike.Core
 {
-    //public class CachedMessage
-
     public class MessageService : IMessageService
     {
         private const int Count = 30;
