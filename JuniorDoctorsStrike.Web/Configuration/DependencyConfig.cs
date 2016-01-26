@@ -18,7 +18,7 @@ namespace JuniorDoctorsStrike.Web.Configuration
             builder.RegisterType<TwitterApiConfiguration>().As<ITwitterApiConfiguration>();
             builder.RegisterType<TwitterHashtagParser>().As<ITwitterHashtagParser>();
             builder.RegisterType<TwitterClient>().As<ITwitterClient>();
-            builder.RegisterType<MessagesService>().As<IMessagesService>();
+            builder.RegisterType<MessageService>().As<IMessageService>();
             builder.RegisterType<HomeController>().AsSelf();
             builder.RegisterType<ApiController>().AsSelf();
 

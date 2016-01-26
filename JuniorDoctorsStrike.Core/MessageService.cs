@@ -5,14 +5,16 @@ using System.Threading.Tasks;
 
 namespace JuniorDoctorsStrike.Core
 {
-    public class MessagesService : IMessagesService
+    //public class CachedMessage
+
+    public class MessageService : IMessageService
     {
         private const int Count = 30;
 
         private readonly ITwitterClient _twitterClient;
         private readonly IEnumerable<string> _hashtagsToObserve; 
 
-        public MessagesService(ITwitterClient twitterClient)
+        public MessageService(ITwitterClient twitterClient)
         {
             _twitterClient = twitterClient;
 
