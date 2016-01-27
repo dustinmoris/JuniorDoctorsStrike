@@ -1,24 +1,29 @@
+using JuniorDoctorsStrike.Common;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using JuniorDoctorsStrike.Common;
 
 namespace JuniorDoctorsStrike.Core
 {
-    public class CachedMessageService : IMessageService
+    public sealed class CachedMessageService : IMessageService
     {
         private const int Count = 30;
 
         private readonly IMessageService _messageService;
+        private readonly TimeSpan _pollingInterval = TimeSpan.FromSeconds(5);
+        private readonly object _padlock = new object();
 
-        //private static Lazy<IMessageService> _instance = new Lazy<IMessageService>(new CachedMessageService(CreateBaseMessageService.Invoke()) as IMessageService);
-        private IEnumerable<Message> MessageCache = new List<Message>();
-        private readonly TimeSpan PollingInterval = TimeSpan.FromSeconds(5);
+        private Timer _messagePollingTicker;
+        private volatile List<Message> _messageCache = new List<Message>();
 
         public static Func<IMessageService> CreateBaseMessageService;
+
+        private static readonly Lazy<CachedMessageService> _instance = 
+            new Lazy<CachedMessageService>(() => new CachedMessageService(CreateBaseMessageService.Invoke()));
+
+        public static CachedMessageService Instance => _instance.Value;
 
         private CachedMessageService(IMessageService messageService)
         {
@@ -32,55 +37,55 @@ namespace JuniorDoctorsStrike.Core
         private void SetInitialSetOfMessages()
         {
             var initialSetOfMessages = _messageService.GetMessagesAsync().Result;
-            MessageCache = initialSetOfMessages;
+            _messageCache = initialSetOfMessages.ToList();
         }
 
         private void InitializeMessagePolling()
         {
-            new Timer(PollMessages, null, PollingInterval, PollingInterval);
+            _messagePollingTicker = new Timer(PollMessages, null, _pollingInterval, _pollingInterval);
         }
-
-        private object _padlock;
 
         private void PollMessages(object state)
         {
+            var copyOfCachedMessages = new List<Message>(_messageCache);
+            var sinceId = copyOfCachedMessages.OrderByDescending(x => x.Created).First().Id;
+            var messageService = CreateBaseMessageService.Invoke();
+            var messages = messageService.GetMessagesSinceAsync(sinceId).Result;
+
+            var temp = copyOfCachedMessages;
+            copyOfCachedMessages.AddRange(messages.Where(message => !temp.Any(m => m.Id.Equals(message.Id))));
+
+            if (copyOfCachedMessages.Count > 300)
+            {
+                copyOfCachedMessages = 
+                    copyOfCachedMessages
+                        .OrderByDescending(x => x.Created)
+                        .Take(300)
+                        .ToList();
+            }
+
             lock (_padlock)
             {
-                var copyOfCache = MessageCache;
-                var sinceId = copyOfCache.OrderByDescending(x => x.Created).First().Id;
-                var messageService = CreateBaseMessageService.Invoke();
-                var messages = messageService.GetMessagesSinceAsync(sinceId).Result;
-
-
-            }
-
-            foreach (var message in messages.Where(message => MessageCache.All(x => x.Id != message.Id)))
-            {
-                MessageCache.Add(message);
-            }
-
-            if (MessageCache.Count > 300)
-            {
-                //MessageCache = MessageCache.OrderByDescending(x => x.Created).Take(300);
+                _messageCache = copyOfCachedMessages;
             }
         }
 
         public Task<IEnumerable<Message>> GetMessagesAsync()
         {
-            var copyOfMessages = MessageCache;
+            var copyOfCachedMessages = new List<Message>(_messageCache);
 
             return Task.FromResult(
-                copyOfMessages
+                copyOfCachedMessages
                     .OrderByDescending(x => x.Created)
                     .Take(Count));
         }
 
         public Task<IEnumerable<Message>> GetMessagesSinceAsync(long sinceId)
         {
-            var copyOfMessages = MessageCache;
+            var copyOfCachedMessages = new List<Message>(_messageCache);
 
             return Task.FromResult(
-                copyOfMessages
+                copyOfCachedMessages
                     .Where(x => x.Id > sinceId)
                     .OrderByDescending(x => x.Created) 
                     as IEnumerable<Message>);

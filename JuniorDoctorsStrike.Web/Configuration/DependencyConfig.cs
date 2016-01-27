@@ -18,11 +18,16 @@ namespace JuniorDoctorsStrike.Web.Configuration
             builder.RegisterType<TwitterApiConfiguration>().As<ITwitterApiConfiguration>();
             builder.RegisterType<TwitterHashtagParser>().As<ITwitterHashtagParser>();
             builder.RegisterType<TwitterClient>().As<ITwitterClient>();
-            builder.RegisterType<MessageService>().As<IMessageService>();
+            builder.RegisterType<CachedMessageService>().As<IMessageService>();
             builder.RegisterType<HomeController>().AsSelf();
             builder.RegisterType<ApiController>().AsSelf();
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(builder.Build()));
+
+            CachedMessageService.CreateBaseMessageService = 
+                () => new MessageService(
+                    DependencyResolver.Current.GetService<ITwitterClient>(),
+                    AppConfig.GetHashtags());
         }
     }
 }

@@ -10,30 +10,25 @@ namespace JuniorDoctorsStrike.Core
         private const int Count = 30;
 
         private readonly ITwitterClient _twitterClient;
-        private readonly IEnumerable<string> _hashtagsToObserve; 
+        private readonly IEnumerable<string> _hashtags; 
 
-        public MessageService(ITwitterClient twitterClient)
+        public MessageService(
+            ITwitterClient twitterClient, 
+            IEnumerable<string> hashtags)
         {
             _twitterClient = twitterClient;
-
-            _hashtagsToObserve = new []
-            {
-                "#JuniorDoctorsStrike",
-                "#juniorcontract",
-                "#notsafenotfair",
-                "#SaveOurNHS"
-            };
+            _hashtags = hashtags;
         }
 
         public async Task<IEnumerable<Message>> GetMessagesAsync()
         {
-            return await _twitterClient.SearchAsync(_hashtagsToObserve, ResultType.Recent, Count).ConfigureAwait(false);
+            return await _twitterClient.SearchAsync(_hashtags, ResultType.Recent, Count).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Message>> GetMessagesSinceAsync(long sinceId)
         {
             return await _twitterClient.SearchAsync(
-                _hashtagsToObserve, 
+                _hashtags, 
                 ResultType.Recent, 
                 ResultTime.SinceId, 
                 Count, 
@@ -43,7 +38,7 @@ namespace JuniorDoctorsStrike.Core
         public async Task<IEnumerable<Message>> GetMessagesUntilAsync(long maxId)
         {
             return await _twitterClient.SearchAsync(
-                _hashtagsToObserve,
+                _hashtags,
                 ResultType.Recent,
                 ResultTime.MaxId,
                 Count,
