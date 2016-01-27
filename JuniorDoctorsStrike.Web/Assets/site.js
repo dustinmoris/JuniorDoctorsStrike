@@ -32,8 +32,7 @@ function loadOlderMessages() {
     var maxId = $(".message:last-child > input[name=id]").val();
 
     $.get("/api/messagesUntil/" + maxId, function (messages) {
-        // skipping the first message, because it is a duplicate
-        for (var i = 1; i < messages.length; i++) {
+        for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
             var html = formatMessage(message);
             $("#message-stream").append(html);

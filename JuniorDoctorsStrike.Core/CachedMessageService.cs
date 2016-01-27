@@ -10,13 +10,15 @@ namespace JuniorDoctorsStrike.Core
     public sealed class CachedMessageService : IMessageService
     {
         private const int Count = 30;
+        private const int PollingIntervalInSeconds = 5;
+        private const int MaxCacheCount = 1000;
 
         private readonly IMessageService _messageService;
-        private readonly TimeSpan _pollingInterval = TimeSpan.FromSeconds(5);
+        private readonly TimeSpan _pollingInterval = TimeSpan.FromSeconds(PollingIntervalInSeconds);
         private readonly object _padlock = new object();
 
         private Timer _messagePollingTicker;
-        private volatile List<Message> _messageCache = new List<Message>();
+        private volatile HashSet<Message> _messageCache = new HashSet<Message>();
 
         public static Func<IMessageService> CreateBaseMessageService;
 
@@ -28,16 +30,18 @@ namespace JuniorDoctorsStrike.Core
         private CachedMessageService(IMessageService messageService)
         {
             _messageService = messageService;
-
             SetInitialSetOfMessages();
-
             InitializeMessagePolling();
         }
 
         private void SetInitialSetOfMessages()
         {
             var initialSetOfMessages = _messageService.GetMessagesAsync().Result;
-            _messageCache = initialSetOfMessages.ToList();
+
+            foreach (var message in initialSetOfMessages)
+            {
+                _messageCache.Add(message);
+            }
         }
 
         private void InitializeMessagePolling()
@@ -47,21 +51,32 @@ namespace JuniorDoctorsStrike.Core
 
         private void PollMessages(object state)
         {
-            var copyOfCachedMessages = new List<Message>(_messageCache);
-            var sinceId = copyOfCachedMessages.OrderByDescending(x => x.Created).First().Id;
+            var copyOfCachedMessages = new HashSet<Message>(_messageCache);
+            var sinceId = copyOfCachedMessages.OrderByDescending(x => x.Created).First().IdValue;
             var messageService = CreateBaseMessageService.Invoke();
-            var messages = messageService.GetMessagesSinceAsync(sinceId).Result;
+            var messages = messageService.GetMessagesSinceAsync(sinceId).Result.ToList();
 
-            var temp = copyOfCachedMessages;
-            copyOfCachedMessages.AddRange(messages.Where(message => !temp.Any(m => m.Id.Equals(message.Id))));
+            if (messages.Count == 0)
+                return;
 
-            if (copyOfCachedMessages.Count > 300)
+            foreach (var message in messages)
             {
-                copyOfCachedMessages = 
+                copyOfCachedMessages.Add(message);
+            }
+
+            if (copyOfCachedMessages.Count > MaxCacheCount)
+            {
+                var reducedCachedMessages = 
                     copyOfCachedMessages
                         .OrderByDescending(x => x.Created)
-                        .Take(300)
-                        .ToList();
+                        .Take(MaxCacheCount);
+
+                copyOfCachedMessages.Clear();
+
+                foreach (var message in reducedCachedMessages)
+                {
+                    copyOfCachedMessages.Add(message);
+                }
             }
 
             lock (_padlock)
@@ -72,7 +87,7 @@ namespace JuniorDoctorsStrike.Core
 
         public Task<IEnumerable<Message>> GetMessagesAsync()
         {
-            var copyOfCachedMessages = new List<Message>(_messageCache);
+            var copyOfCachedMessages = new HashSet<Message>(_messageCache);
 
             return Task.FromResult(
                 copyOfCachedMessages
@@ -82,18 +97,45 @@ namespace JuniorDoctorsStrike.Core
 
         public Task<IEnumerable<Message>> GetMessagesSinceAsync(long sinceId)
         {
-            var copyOfCachedMessages = new List<Message>(_messageCache);
+            var copyOfCachedMessages = new HashSet<Message>(_messageCache);
 
             return Task.FromResult(
                 copyOfCachedMessages
-                    .Where(x => x.Id > sinceId)
+                    .Where(x => x.IdValue > sinceId)
                     .OrderByDescending(x => x.Created) 
                     as IEnumerable<Message>);
         }
 
-        public Task<IEnumerable<Message>> GetMessagesUntilAsync(long maxId)
+        public async Task<IEnumerable<Message>> GetMessagesUntilAsync(long maxId)
         {
-            return _messageService.GetMessagesUntilAsync(maxId);
+            var copyOfCachedMessages = new HashSet<Message>(_messageCache);
+
+            var messages = 
+                copyOfCachedMessages
+                    .Where(x => x.IdValue < maxId)
+                    .OrderByDescending(x => x.Created)
+                    .Take(Count)
+                    .ToList();
+
+            if (messages.Count > 0)
+                return messages;
+
+            var newMessages = await _messageService.GetMessagesUntilAsync(maxId);
+
+            foreach (var message in newMessages)
+            {
+                copyOfCachedMessages.Add(message);
+            }
+
+            lock (_padlock)
+            {
+                _messageCache = copyOfCachedMessages;
+            }
+
+            return copyOfCachedMessages
+                    .Where(x => x.IdValue < maxId)
+                    .OrderByDescending(x => x.Created)
+                    .Take(Count);
         }
     }
 }

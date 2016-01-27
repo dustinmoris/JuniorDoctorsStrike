@@ -107,7 +107,7 @@ namespace JuniorDoctorsStrike.TwitterApi
         {
             foreach (var tweet in payload.statuses)
             {
-                var id = long.Parse(tweet.id_str.ToString());
+                var id = tweet.id_str.ToString();
 
                 var created = DateTime.ParseExact(
                     tweet.created_at.ToString(),
