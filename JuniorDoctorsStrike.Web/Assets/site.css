@@ -108,6 +108,12 @@ a {
 
 .user-name {
     font-weight: 600;
+    color: #000;
+    text-decoration: none;
+}
+
+.user-name:hover {
+    color: #38ACEC;
 }
 
 .message-timeinfo {

@@ -50,7 +50,7 @@ function formatMessage(message) {
         "<input type='hidden' name='created' value='" + created + "'/>" +
         "<img class='user-picture' src='" + message.User.ImageUrl + "' alt='" + message.User.Name + "'/>" +
         "<p class='message-header'>" +
-        "<span class='user-name'>" + message.User.Name + "</span>" +
+        "<a class='user-name' href='"+ message.User.ProfileUrl + "' target='_blank'>" + message.User.Name + "</a>" +
         "<span class='message-timeinfo'>" + created.toString().substring(0, 25) + "</span>" +
         "</p>" +
         "<p class='message-text'>" + message.Text + "</p>" +

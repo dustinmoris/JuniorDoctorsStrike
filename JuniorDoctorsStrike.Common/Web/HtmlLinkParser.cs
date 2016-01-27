@@ -10,7 +10,7 @@ namespace JuniorDoctorsStrike.Common.Web
 
             var regex = new Regex(pattern, RegexOptions.IgnoreCase);
 
-            return regex.Replace(input, "<a href=\"$1\">$1</a>").Replace("href=\"www", "href=\"http://www");
+            return regex.Replace(input, "<a href=\"$1\" target=\"_blank\">$1</a>").Replace("href=\"www", "href=\"http://www");
         }
     }
 }
