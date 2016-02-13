@@ -5,6 +5,10 @@
 
 Website to support the junior doctors strike in the UK.
 
-JuniorDoctorsStrike collects messages from various social media platforms such as Twitter, Instagram or Facebook and displays them in one centralised place to give junior doctors a public stage and support to fight against an usafe contract and unsafe NHS conditions.
+Initially JuniorDoctorsStrike was meant to collect messages from various social media platforms such as Twitter, Instagram and Facebook, but later has only been implemented for Twitter.
+
+Facebook retired the Graph API and Instagram locked down the search API with access to only a few selected services.
+
+However, JuniorDoctorsStrike still went public by collecting Twitter messages with various hashtags and aggregating them into one centralised feed which was open to the public.
 
 Visit http://JuniorDoctorsStrike.co.uk to see the live website.
